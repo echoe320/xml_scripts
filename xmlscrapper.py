@@ -15,6 +15,7 @@ subjects = []
 resourcetypes = []
 restrictions = []
 embargodates = []
+pdf_files = []
 
 #Traverse a directory for .xml files
 
@@ -25,6 +26,8 @@ for root, dirs, files in os.walk(directory_name):
     for file in files:
         if file.endswith('.xml'): 
             all_files[file] = Path(root, file)
+        elif file.endswith('.pdf'):
+            pdf_files.append(Path(root,file))
 
 '''
 def get_info(name, int_id, fin_id):
@@ -152,7 +155,8 @@ xml_data = pd.DataFrame({
 "Subject": subjects,
 "Resource Type": resourcetypes,
 "Restrictions": restrictions,
-"Embargo Dates": embargodates
+"Embargo Dates": embargodates,
+"PDF Files": pdf_files
 })
 
 #save link (change to where you want to save it)
