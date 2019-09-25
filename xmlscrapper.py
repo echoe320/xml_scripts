@@ -16,18 +16,21 @@ resourcetypes = []
 restrictions = []
 embargodates = []
 pdf_files = []
+folders = []
 
 #Traverse a directory for .xml files
 
-directory_name = r'C:\Users\echoe\Desktop\xml script'
+directory_name = r'C:\Users\echoe\Desktop\xml script\2018-June'
 
 all_files = {}
 for root, dirs, files in os.walk(directory_name):
     for file in files:
         if file.endswith('.xml'): 
-            all_files[file] = Path(root, file)
+            f = Path(root, file)
+            all_files[file] = f
+            folders.append(f.parent)
         elif file.endswith('.pdf'):
-            pdf_files.append(Path(root,file))
+            pdf_files.append(Path(root, file))
 
 '''
 def get_info(name, int_id, fin_id):
@@ -91,12 +94,16 @@ def get_abs():
     abstracts.append(n)
 
 def get_datecreated():
-    dc = root[1][1][1].text
-    datecreated.append(dc)
+    for a in root.findall('DISS_description'):
+        for b in a.findall('DISS_dates'):
+            for datecre in b.findall('DISS_accept_date'):
+                datecreated.append(datecre.text)
 
 def get_subjects():
-    sub = root[1][3][2].text
-    subjects.append(sub)
+    for a in root.findall('DISS_description'):
+        for b in a.findall('DISS_institution'):
+            for subject in b.findall('DISS_inst_contact'):
+                subjects.append(subject.text)
 
 def get_resourcetype():
     resourcetypes.append("Dissertation")
@@ -143,11 +150,47 @@ for file in directpaths:
     get_resourcetype()
     get_restriction()
     get_embdate()
+'''
+print(len(titles))
+print(len(creators))
+print(len(keywords))
+print(len(rights))
+print(len(abstracts))
+print(len(datecreated))
+print(len(subjects))
+print(len(resourcetypes))
+print(len(restrictions))
+print(len(embargodates))
+print(len(pdf_files))
 
+titles.append("")
+creators.append("")
+keywords.append("")
+rights.append("")
+abstracts.append("")
+datecreated.append("")
+subjects.append("")
+resourcetypes.append("")
+restrictions.append("")
+embargodates.append("")
+titles.append("")
+creators.append("")
+keywords.append("")
+rights.append("")
+abstracts.append("")
+datecreated.append("")
+subjects.append("")
+resourcetypes.append("")
+restrictions.append("")
+embargodates.append("")
+folders.append("")
+folders.append("")
+'''
 #putting into CSV file
 xml_data = pd.DataFrame({
+"Folder": folders,    
 "Title": titles,
-"Creator": creators,
+"Creator (suffix, fname, middle, surname)": creators,
 "Keyword": keywords,
 "Rights": rights,
 "Abstract": abstracts,
